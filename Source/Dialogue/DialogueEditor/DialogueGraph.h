@@ -3,12 +3,12 @@
 #pragma once
 
 #include "EdGraph/EdGraph.h"
-#include "DialogueTreeGraph.generated.h"
+#include "DialogueGraph.generated.h"
 
 UCLASS()
-class UDialogueTreeGraph : public UEdGraph
+class UDialogueGraph : public UEdGraph
 {
 	GENERATED_BODY()
 public:
-	UDialogueTreeGraph();
+	UDialogueGraph();
 };

@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class DialogueTree : ModuleRules
+public class Dialogue : ModuleRules
 {
-	public DialogueTree(ReadOnlyTargetRules Target) : base(Target)
+	public Dialogue(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
         PublicIncludePaths.Add(ModuleDirectory);

@@ -2,7 +2,7 @@
 
 #include "AssetTypeActions/AssetTypeActions_Blueprint.h"
 
-class FDialogueTreeBlueprintActions final : public FAssetTypeActions_Blueprint
+class FDialogueBlueprintActions final : public FAssetTypeActions_Blueprint
 {
 public:
 	// IAssetTypeActions Implementation

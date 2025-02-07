@@ -2,7 +2,7 @@
 	"FileVersion": 3,
 	"Version": 1,
 	"VersionName": "1.0",
-	"FriendlyName": "DialogueTree",
+	"FriendlyName": "Dialogue",
 	"Description": "",
 	"Category": "Other",
 	"CreatedBy": "Krystian Sobczyk",
@@ -17,12 +17,12 @@
 	"Modules": 
 	[
 		{
-			"Name": "DialogueTree",
+			"Name": "Dialogue",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
 		},
 		{
-			"Name": "DialogueTreeEditor",
+			"Name": "DialogueEditor",
 			"Type": "Editor"
 		}
 	]

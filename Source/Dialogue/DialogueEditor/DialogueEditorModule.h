@@ -6,9 +6,9 @@
 #include "Modules/ModuleManager.h"
 
 class IAssetTypeActions;
-class FDialogueTreeCompilerContext;
+class FDialogueCompilerContext;
 
-class FDialogueTreeEditor : public IModuleInterface
+class FDialogueEditor : public IModuleInterface
 {
 public:
 
@@ -19,5 +19,5 @@ public:
 private:
 	TArray<TSharedRef<IAssetTypeActions>> RegisteredAssetTypeActions;
 
-	static TSharedPtr<FKismetCompilerContext> GetCompilerForDialogueTree(UBlueprint* BP, FCompilerResultsLog& InMessageLog, const FKismetCompilerOptions& InCompileOptions);
+	static TSharedPtr<FKismetCompilerContext> GetCompilerForDialogue(UBlueprint* BP, FCompilerResultsLog& InMessageLog, const FKismetCompilerOptions& InCompileOptions);
 };

@@ -2,9 +2,9 @@
 
 using UnrealBuildTool;
 
-public class DialogueTreeEditor : ModuleRules
+public class DialogueEditor : ModuleRules
 {
-	public DialogueTreeEditor(ReadOnlyTargetRules Target) : base(Target)
+	public DialogueEditor(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
         PublicIncludePaths.Add(ModuleDirectory);
@@ -18,8 +18,9 @@ public class DialogueTreeEditor : ModuleRules
             "SlateCore",
             "UnrealEd",
             "AssetTools",
-            "DialogueTree",
-            "KismetCompiler"
+            "Dialogue",
+            "KismetCompiler",
+            "GraphEditor"
         });
     }
 }
