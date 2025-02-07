@@ -47,4 +47,6 @@ public:
 	virtual void CreateDefaultNodesForGraph(UEdGraph& Graph) const override;
 	virtual const FPinConnectionResponse CanCreateConnection(const UEdGraphPin* A, const UEdGraphPin* B) const override;
 
+	void GetPaletteActions(FGraphActionListBuilderBase& ActionMenuBuilder) const;
+
 };

@@ -26,11 +26,16 @@ public:
 
 protected:
 	TSharedRef<SDockTab> SpawnTab_Graph(const FSpawnTabArgs& Args);
-	TSharedRef<SDockTab> SpawnTab_NodeDetails(const FSpawnTabArgs& Args);
+	TSharedRef<SDockTab> SpawnTab_Details(const FSpawnTabArgs& Args);
+	TSharedRef<SDockTab> SpawnTab_Palette(const FSpawnTabArgs& Args);
+
+	TSharedRef<FTabManager::FLayout> CreateGraphEditorLayout() const;
 
 private:
 	void OnNodeSingleClicked(UObject* ClickedNode) const;
 
 	TSharedPtr<SGraphEditor> GraphEditor;
 	TSharedPtr<IDetailsView> NodeDetailsView;
+
+	static inline uint32 GraphEditorLayoutVersion = 9; 
 };

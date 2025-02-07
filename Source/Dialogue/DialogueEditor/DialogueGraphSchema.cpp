@@ -50,4 +50,9 @@ const FPinConnectionResponse UDialogueGraphSchema::CanCreateConnection(const UEd
 	return FPinConnectionResponse(CONNECT_RESPONSE_MAKE, TEXT(""));
 }
 
+void UDialogueGraphSchema::GetPaletteActions(FGraphActionListBuilderBase& ActionMenuBuilder) const
+{
+
+}
+
 #undef  LOCTEXT_NAMESPACE

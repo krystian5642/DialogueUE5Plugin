@@ -5,7 +5,7 @@
 #include "EdGraph/EdGraphNode.h"
 #include "DialogueNodeBase.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class UDialogueNodeBase : public UEdGraphNode
 {
 	GENERATED_BODY()

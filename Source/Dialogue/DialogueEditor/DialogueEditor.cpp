@@ -5,13 +5,15 @@
 #include "DialogueBlueprint.h"
 #include "DialogueGraphSchema.h"
 #include "Kismet2/BlueprintEditorUtils.h"
+#include "Widgets/SDialoguePalette.h"
 
 #define LOCTEXT_NAMESPACE "DialogueEditor"
 
 namespace DialogueEditorTabs
 {
 	static const FName GraphTabId("GraphTab");
-	static const FName NodeDetailsTabId("NodeDetailsTab");
+	static const FName DetailsTabId("DetailsTab");
+	static const FName PaletteTabId("PaletteTab");
 }
 
 FName FDialogueEditor::GetToolkitFName() const
@@ -39,11 +41,13 @@ void FDialogueEditor::RegisterTabSpawners(const TSharedRef<FTabManager>& InTabMa
 	Super::RegisterTabSpawners(InTabManager);
 
 	InTabManager->RegisterTabSpawner(DialogueEditorTabs::GraphTabId, FOnSpawnTab::CreateSP(this, &FDialogueEditor::SpawnTab_Graph))
-		.SetDisplayName(LOCTEXT("GraphCanvasTab", "Dialogue Graph"));
-/*		.SetIcon(FSlateIcon(FAppStyle::GetAppStyleSetName(), "GraphEditor.EventGraph_16x"));*/
+		.SetDisplayName(LOCTEXT("GraphCanvasTab", "Graph"));
 
-	InTabManager->RegisterTabSpawner(DialogueEditorTabs::NodeDetailsTabId, FOnSpawnTab::CreateSP(this, &FDialogueEditor::SpawnTab_NodeDetails))
-		.SetDisplayName(LOCTEXT("NodeDetailsCanvasTab", "Node Details"));
+	InTabManager->RegisterTabSpawner(DialogueEditorTabs::DetailsTabId, FOnSpawnTab::CreateSP(this, &FDialogueEditor::SpawnTab_Details))
+		.SetDisplayName(LOCTEXT("DetailsCanvasTab", "Details"));
+
+	InTabManager->RegisterTabSpawner(DialogueEditorTabs::PaletteTabId, FOnSpawnTab::CreateSP(this, &FDialogueEditor::SpawnTab_Palette))
+		.SetDisplayName(LOCTEXT("PaletteCanvasTab", "Palette"));
 }
 
 void FDialogueEditor::UnregisterTabSpawners(const TSharedRef<FTabManager>& InTabManager)
@@ -70,42 +74,23 @@ void FDialogueEditor::CreateGraphEditor(UDialogueBlueprint* DialogueBP, EToolkit
 		.GraphToEdit(DialogueBP->MyGraph)
 		.GraphEvents(GraphEvents);
 
-	const TSharedRef<FTabManager::FLayout> Layout = FTabManager::NewLayout("Standalone_DialogueEditor_Layout_v5")
-		->AddArea
-		(
-			FTabManager::NewPrimaryArea()
-			->Split
-			(
-				FTabManager::NewSplitter()
-				->SetOrientation(Orient_Horizontal)
-				->Split
-				(
-					FTabManager::NewStack()
-					->SetSizeCoefficient(0.8f)
-					->AddTab(DialogueEditorTabs::GraphTabId, ETabState::OpenedTab)
-				)
-				->Split
-				(
-					FTabManager::NewStack()
-					->SetSizeCoefficient(0.2f)
-					->AddTab(DialogueEditorTabs::NodeDetailsTabId, ETabState::OpenedTab)
-				)
-			)
-		);
-
-	InitAssetEditor(Mode, EditWithinLevelEditor, TEXT("DialogueEditorApp"), Layout, true, true, DialogueBP);
+	InitAssetEditor(Mode, EditWithinLevelEditor, TEXT("DialogueEditorApp"), CreateGraphEditorLayout(), true, true, DialogueBP);
 }
 
 TSharedRef<SDockTab> FDialogueEditor::SpawnTab_Graph(const FSpawnTabArgs& Args)
 {
+	check(Args.GetTabId() == DialogueEditorTabs::GraphTabId);
+
 	return SNew(SDockTab)
 	[
 		GraphEditor.ToSharedRef()
 	];
 }
 
-TSharedRef<SDockTab> FDialogueEditor::SpawnTab_NodeDetails(const FSpawnTabArgs& Args)
+TSharedRef<SDockTab> FDialogueEditor::SpawnTab_Details(const FSpawnTabArgs& Args)
 {
+	check(Args.GetTabId() == DialogueEditorTabs::DetailsTabId);
+
 	FPropertyEditorModule& PropertyEditorModule = FModuleManager::GetModuleChecked<FPropertyEditorModule>("PropertyEditor");
 
 	FDetailsViewArgs QueryDetailsViewArgs;
@@ -117,6 +102,53 @@ TSharedRef<SDockTab> FDialogueEditor::SpawnTab_NodeDetails(const FSpawnTabArgs& 
 	[
 		NodeDetailsView.ToSharedRef()
 	];
+}
+
+TSharedRef<SDockTab> FDialogueEditor::SpawnTab_Palette(const FSpawnTabArgs& Args)
+{
+	check(Args.GetTabId() == DialogueEditorTabs::PaletteTabId);
+
+	TSharedRef<SDialoguePalette> DialoguePalette = SNew(SDialoguePalette);
+
+	return SNew(SDockTab)
+	[
+		DialoguePalette
+	];
+}
+
+TSharedRef<FTabManager::FLayout> FDialogueEditor::CreateGraphEditorLayout() const
+{
+	return FTabManager::NewLayout(*FString::Printf(TEXT("Standalone_DialogueEditor_Layout_v%d"), GraphEditorLayoutVersion))
+		->AddArea
+		(
+			FTabManager::NewPrimaryArea()
+			->Split
+			(
+				FTabManager::NewSplitter()
+				->SetOrientation(Orient_Horizontal)
+				->Split
+				(
+					FTabManager::NewStack()
+					->SetSizeCoefficient(0.20f)
+					->SetHideTabWell(true)
+					->AddTab(DialogueEditorTabs::DetailsTabId, ETabState::OpenedTab)
+				)
+				->Split
+				(
+					FTabManager::NewStack()
+					->SetSizeCoefficient(0.65f)
+					->SetHideTabWell(true)
+					->AddTab(DialogueEditorTabs::GraphTabId, ETabState::OpenedTab)
+				)
+				->Split
+				(
+					FTabManager::NewStack()
+					->SetSizeCoefficient(0.15f)
+					->SetHideTabWell(true)
+					->AddTab(DialogueEditorTabs::PaletteTabId, ETabState::OpenedTab)
+				)
+			)
+		);
 }
 
 void FDialogueEditor::OnNodeSingleClicked(UObject* ClickedNode) const
